@@ -63,16 +63,12 @@ public class Potion {
 
     @Override
     public String toString() {
-        try {
-            return new ObjectMapper().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            return "PotionPouch {" +
-                    "ID = " + id +
-                    ", Name = " + name +
-                    ", First Ingredient = " + ingredient1 +
-                    ", Second Ingredient = " + ingredient2 +
-                    ", Effects = " + effect +
-                    "}";
-        }
+        return "Potion {" +
+                "ID = " + id +
+                ", Name = " + name +
+                ", First Ingredient = " + ingredient1 +
+                ", Second Ingredient = " + ingredient2 +
+                ", Effects = " + effect +
+                "}";
     }
 }
