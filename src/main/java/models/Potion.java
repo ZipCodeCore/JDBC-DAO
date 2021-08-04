@@ -3,7 +3,7 @@ package models;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PotionPouch {
+public class Potion {
 
     private Long id;
     private String name;
@@ -11,9 +11,9 @@ public class PotionPouch {
     private String ingredient2;
     private String effect;
 
-    public PotionPouch() {}
+    public Potion() {}
 
-    public PotionPouch(Long id, String name, String ingredient1, String ingredient2, String effect) {
+    public Potion(Long id, String name, String ingredient1, String ingredient2, String effect) {
         this.id = id;
         this.name = name;
         this.ingredient1 = ingredient1;

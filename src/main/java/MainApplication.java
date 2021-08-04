@@ -1,7 +1,7 @@
 
 import com.mysql.cj.jdbc.Driver;
-import daos.PokemonRepository;
-import models.Pokemon;
+import daos.PotionRepository;
+import models.Potion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,21 +20,22 @@ public class MainApplication {
     public static void main(String[] args) {
         registerJDBCDriver();
         Connection mysqlDbConnection = getConnection("mysql");
-        PokemonRepository pokemonRepository = new PokemonRepository(mysqlDbConnection);
-        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS databaseName;");
-        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS databaseName;");
-        executeStatement(mysqlDbConnection, "USE databaseName;");
+        PotionRepository pokemonRepository = new PotionRepository(mysqlDbConnection);
+        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS potions;");
+        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS potions;");
+        executeStatement(mysqlDbConnection, "USE potions;");
         executeStatement(mysqlDbConnection, new StringBuilder()
-                .append("CREATE TABLE IF NOT EXISTS databaseName.pokemonTable(")
+                .append("CREATE TABLE IF NOT EXISTS potions.potionsTable(")
                 .append("id int auto_increment primary key,")
                 .append("name text not null,")
-                .append("primary_type int not null,")
-                .append("secondary_type int null);")
+                .append("ingredient1 text not null,")
+                .append("ingredient2 text not null,")
+                .append("effect text not null);")
                 .toString());
 
-        pokemonRepository.create(new Pokemon(12L, "Ivysaur", 3, 7));
-        pokemonRepository.create(new Pokemon(13L, "Ivysaurr", 3, 7));
-        System.out.println(pokemonRepository.readAll());
+        pokemonRepository.create(new Potion(1L, "Restore Health", "blue mountain flower", "daedra heart", "health regen"));
+        pokemonRepository.create(new Potion(2L, "Restore Magicka", "briar heart", "red mountain flower", "magicka regen"));
+        System.out.println(pokemonRepository.findAll());
 
     }
 
@@ -84,8 +85,8 @@ public class MainApplication {
     }
 
     static Connection getConnection(String dbVendor) {
-        String username = "root";
-        String password = "";
+        String username = "jen";
+        String password = "zipcode0";
         String url = new StringBuilder()
                 .append("jdbc:")
                 .append(dbVendor)
