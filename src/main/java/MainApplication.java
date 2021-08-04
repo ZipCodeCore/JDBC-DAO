@@ -1,7 +1,7 @@
 
 import com.mysql.cj.jdbc.Driver;
-import daos.PokemonRepository;
-import models.Pokemon;
+import daos.VehicleRepo;
+import models.Vehicle;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,21 +20,26 @@ public class MainApplication {
     public static void main(String[] args) {
         registerJDBCDriver();
         Connection mysqlDbConnection = getConnection("mysql");
-        PokemonRepository pokemonRepository = new PokemonRepository(mysqlDbConnection);
-        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS databaseName;");
-        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS databaseName;");
-        executeStatement(mysqlDbConnection, "USE databaseName;");
+        VehicleRepo vehicleRepo = new VehicleRepo(mysqlDbConnection);
+        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS daolab;");
+        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS daolab;");
+        executeStatement(mysqlDbConnection, "USE daolab;");
         executeStatement(mysqlDbConnection, new StringBuilder()
-                .append("CREATE TABLE IF NOT EXISTS databaseName.pokemonTable(")
-                .append("id int auto_increment primary key,")
-                .append("name text not null,")
-                .append("primary_type int not null,")
-                .append("secondary_type int null);")
+                .append("CREATE TABLE IF NOT EXISTS daolab.vehicle(")
+                .append("primaryId int auto_increment primary key,")
+                .append("make text not null,")
+                .append("model text not null,")
+                .append("color text not null,")
+                .append("vtype text not null,")
+                .append("mpg int not null);")
                 .toString());
 
-        pokemonRepository.create(new Pokemon(12L, "Ivysaur", 3, 7));
-        pokemonRepository.create(new Pokemon(13L, "Ivysaurr", 3, 7));
-        System.out.println(pokemonRepository.readAll());
+        Vehicle vehicle = new Vehicle(12L, "Nissan", "Maxima", "Charcoal", "Car", 40 );
+        vehicleRepo.create(vehicle);
+        vehicleRepo.create(new Vehicle(13L, "Ford", "F150", "Blue", "Truck", 22 ));
+        vehicleRepo.update(12L, new Vehicle("Ford", "F150", "Blue", "Truck", 10 ));
+        vehicleRepo.delete(vehicle);
+        System.out.println(vehicleRepo.readAll());
 
     }
 
@@ -84,8 +89,8 @@ public class MainApplication {
     }
 
     static Connection getConnection(String dbVendor) {
-        String username = "root";
-        String password = "";
+        String username = "carl";
+        String password = "carlpass";
         String url = new StringBuilder()
                 .append("jdbc:")
                 .append(dbVendor)
