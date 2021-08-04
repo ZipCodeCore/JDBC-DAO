@@ -1,13 +1,8 @@
 package daos;
 
-import com.sun.jdi.connect.Connector;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
-public class DataAccessObject<T> implements PatternOps<T>{
+public class DataAccessObject<T> implements DAO<T> {
 
 
     public T findById(int id) {

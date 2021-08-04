@@ -2,7 +2,7 @@ package daos;
 
 import java.util.List;
 
-public interface PatternOps<T> {
+public interface DAO<T> {
 
     public T findById(int id);
 
