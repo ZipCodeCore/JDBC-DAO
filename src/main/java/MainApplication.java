@@ -1,5 +1,7 @@
 
 import com.mysql.cj.jdbc.Driver;
+import daos.PokemonRepository;
+import models.Pokemon;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +20,7 @@ public class MainApplication {
     public static void main(String[] args) {
         registerJDBCDriver();
         Connection mysqlDbConnection = getConnection("mysql");
+        PokemonRepository pokemonRepository = new PokemonRepository(mysqlDbConnection);
         executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS databaseName;");
         executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS databaseName;");
         executeStatement(mysqlDbConnection, "USE databaseName;");
@@ -28,21 +31,10 @@ public class MainApplication {
                 .append("primary_type int not null,")
                 .append("secondary_type int null);")
                 .toString());
-        executeStatement(mysqlDbConnection, new StringBuilder()
-                .append("INSERT INTO databaseName.pokemonTable(")
-                .append("id, name, primary_type, secondary_type) ")
-                .append("VALUES (12, 'Ivysaur', 3, 7);")
-                .toString());
 
-        executeStatement(mysqlDbConnection, new StringBuilder()
-                .append("INSERT INTO databaseName.pokemonTable(")
-                .append("id, name, primary_type, secondary_type) ")
-                .append("VALUES (13, 'Ivysaurr', 3, 7);")
-                .toString());
-
-        String getPokemonTable = "SELECT * FROM databaseName.pokemonTable;";
-        ResultSet resultSet = executeQuery(mysqlDbConnection, getPokemonTable);
-        printResults(resultSet);
+        pokemonRepository.create(new Pokemon(12L, "Ivysaur", 3, 7));
+        pokemonRepository.create(new Pokemon(13L, "Ivysaurr", 3, 7));
+        System.out.println(pokemonRepository.readAll());
 
     }
 
