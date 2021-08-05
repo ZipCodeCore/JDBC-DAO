@@ -1,10 +1,9 @@
+package main;
 
-import com.mysql.cj.jdbc.Driver;
 import daos.PotionRepository;
 import models.Potion;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,8 +17,8 @@ import java.util.StringJoiner;
 public class MainApplication {
 
     public static void main(String[] args) {
-        registerJDBCDriver();
-        Connection mysqlDbConnection = getConnection("mysql");
+        SQLConnect.registerJDBCDriver();
+        Connection mysqlDbConnection = SQLConnect.getConnection("mysql");
         PotionRepository pokemonRepository = new PotionRepository(mysqlDbConnection);
         executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS potions;");
         executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS potions;");
@@ -83,30 +82,4 @@ public class MainApplication {
             throw new Error(e);
         }
     }
-
-    static Connection getConnection(String dbVendor) {
-        String username = "jen";
-        String password = "zipcode0";
-        String url = new StringBuilder()
-                .append("jdbc:")
-                .append(dbVendor)
-                .append("://127.0.0.1/")
-                .append("?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
-                .toString();
-        try {
-            return DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            throw new Error(e);
-        }
-    }
-
-    static void registerJDBCDriver() {
-        // Attempt to register JDBC Driver
-        try {
-            DriverManager.registerDriver(Driver.class.newInstance());
-        } catch (InstantiationException | IllegalAccessException | SQLException e1) {
-            throw new RuntimeException(e1);
-        }
-    }
-
 }

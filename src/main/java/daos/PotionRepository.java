@@ -67,8 +67,8 @@ public class PotionRepository implements Repository{
 
     public void update(Long id, Potion newPotionData) {
         executeStatement(String.format(new StringBuilder()
-                .append("UPDATE potions.potionsTable")
-                .append("SET name = %s, ingredient1 = %s, ingredient2 = %s, effect = %s WHERE id = %s;")
+                .append("UPDATE potions.potionsTable ")
+                .append("SET name = '%s', ingredient1 = '%s', ingredient2 = '%s', effect = '%s' WHERE id = %s;")
                 .toString(),
             newPotionData.getName(),
             newPotionData.getIngredient1(),
