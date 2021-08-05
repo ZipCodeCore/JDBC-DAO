@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Maven.JDBC-DAO" />
         <module name="jdbc-dao" />
+        <module name="jdbcdao" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8" />

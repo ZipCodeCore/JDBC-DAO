@@ -36,6 +36,8 @@ public class MainApplication {
         pokemonRepository.create(new Pokemon(13L, "Ivysaurr", 3, 7));
         System.out.println(pokemonRepository.readAll());
 
+
+
     }
 
     static ResultSet executeQuery(Connection connection, String sqlQuery) {
