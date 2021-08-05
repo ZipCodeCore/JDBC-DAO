@@ -71,15 +71,33 @@ public class CarRepository implements Repo {
     }
 
     public void update(Long id, Car newPokemonData) {
+        executeStatement(String.format(new StringBuilder()
+             .append("UPDATE carTable,")
+                .append("SET make '%s',")
+                .append("model '%s',")
+                .append("year %s,")
+                .append("color '%s',")
+                .append("vin %s,")
+                .append("WHERE id = %s;")
+                .toString(),
+                newPokemonData.getMake(),
+                newPokemonData.getModel(),
+                newPokemonData.getYear(),
+                newPokemonData.getColor(),
+                newPokemonData.getVin(),
+                id));
 
     }
 
     public void delete(Long id) {
-
+        executeStatement(String.format(new StringBuilder()
+                .append("DELETE FROM carTable WHERE id = %s")
+                .toString(),
+                id));
     }
 
     public void delete(Car car) {
-
+        delete(car.getId());
     }
 
 }
