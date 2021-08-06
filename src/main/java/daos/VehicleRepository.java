@@ -64,7 +64,7 @@ public class VehicleRepository implements Repo {
         return list;
     }
 
-    public Vehicle read(Long vehicleId) {
+    public Vehicle findById(Long vehicleId) {
         return readAll()
                 .stream()
                 .filter(pokemon -> pokemon.getId().equals(vehicleId))

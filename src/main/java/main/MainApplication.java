@@ -1,13 +1,9 @@
+package main;
 
 import com.mysql.cj.jdbc.Driver;
 import daos.VehicleRepository;
 import models.Vehicle;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.StringJoiner;
 
 /**
@@ -18,8 +14,8 @@ import java.util.StringJoiner;
 public class MainApplication {
 
     public static void main(String[] args) {
-        registerJDBCDriver();
-        Connection mysqlDbConnection = getConnection("mysql");
+        SQLConnector.registerJDBCDriver();
+        Connection mysqlDbConnection = SQLConnector.getConnection("mysql");
         VehicleRepository vehicleRepository = new VehicleRepository(mysqlDbConnection);
         executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS model;");
         executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS model;");
@@ -41,7 +37,6 @@ public class MainApplication {
         vehicleRepository.create(new Vehicle(5L, "Nissan", "Altima", 2012, "Gray", "1G1AK15F177174588"));
         vehicleRepository.create(new Vehicle(6L, "Tesla", "Model S", 2020, "Red", "1FDKF37G0VEB13318"));
         System.out.println(vehicleRepository.readAll());
-
 
 
     }
@@ -90,30 +85,30 @@ public class MainApplication {
             throw new Error(e);
         }
     }
-
-    static Connection getConnection(String dbVendor) {
-        String username = "Manny";
-        String password = "zipcode0";
-        String url = new StringBuilder()
-                .append("jdbc:")
-                .append(dbVendor)
-                .append("://127.0.0.1/")
-                .append("?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
-                .toString();
-        try {
-            return DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            throw new Error(e);
-        }
-    }
-
-    static void registerJDBCDriver() {
-        // Attempt to register JDBC Driver
-        try {
-            DriverManager.registerDriver(Driver.class.newInstance());
-        } catch (InstantiationException | IllegalAccessException | SQLException e1) {
-            throw new RuntimeException(e1);
-        }
-    }
-
 }
+
+//    static Connection getConnection(String dbVendor) {
+//        String username = "Manny";
+//        String password = "zipcode0";
+//        String url = new StringBuilder()
+//                .append("jdbc:")
+//                .append(dbVendor)
+//                .append("://127.0.0.1/")
+//                .append("?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
+//                .toString();
+//        try {
+//            return DriverManager.getConnection(url, username, password);
+//        } catch (SQLException e) {
+//            throw new Error(e);
+//        }
+//    }
+//
+//    static void registerJDBCDriver() {
+//        // Attempt to register JDBC Driver
+//        try {
+//            DriverManager.registerDriver(Driver.class.newInstance());
+//        } catch (InstantiationException | IllegalAccessException | SQLException e1) {
+//            throw new RuntimeException(e1);
+//        }
+//    }
+// }
