@@ -2,6 +2,7 @@ package models;
 
 import com.mysql.cj.jdbc.Driver;
 import daos.CityRepository;
+import daos.Conecter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,8 +19,9 @@ import java.util.StringJoiner;
 public class MainApplication {
 
     public static void main(String[] args) {
-        registerJDBCDriver();
-        Connection mysqlDbConnection = getConnection("mysql");
+        Conecter conecter = new Conecter();
+        conecter.registerJDBCDriver();
+        Connection mysqlDbConnection = conecter.getConnection("mysql");
         CityRepository cityRepository = new CityRepository(mysqlDbConnection);
         executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS ciudades;");
         executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS ciudades;");
@@ -32,8 +34,8 @@ public class MainApplication {
                 .append("level int null);")
                 .toString());
 
-        cityRepository.create(new City(12L, "Chicago", 3, 7));
-        cityRepository.create(new City(13L, "New York", 3, 7));
+       cityRepository.create(new City(12L, "Chicago", 3, 7));
+       cityRepository.create(new City(13L, "New York", 8, 4));
         System.out.println(cityRepository.readAll());
 
     }
@@ -53,11 +55,13 @@ public class MainApplication {
                 String firstColumnData = resultSet.getString(1);
                 String secondColumnData = resultSet.getString(2);
                 String thirdColumnData = resultSet.getString(3);
+                String forthColumnData = resultSet.getString(4);
                 System.out.println(new StringJoiner("\n")
                         .add("Row number = " + rowNumber)
                         .add("First Column = " + firstColumnData)
                         .add("Second Column = " + secondColumnData)
-                        .add("Third column = " + thirdColumnData));
+                        .add("Third column = " + thirdColumnData)
+                        .add("Forth Column = " + forthColumnData));
             }
         } catch (SQLException e) {
             throw new Error(e);
@@ -68,7 +72,7 @@ public class MainApplication {
         try {
             Statement statement = getScrollableStatement(connection);
             statement.execute(sqlStatement);
-            connection.setAutoCommit(false);
+           // connection.setAutoCommit(false);
         } catch (SQLException e) {
             throw new Error(e);
         }
@@ -84,29 +88,29 @@ public class MainApplication {
         }
     }
 
-    static Connection getConnection(String dbVendor) {
-        String username = "laura";
-        String password = "zipcode0";
-        String url = new StringBuilder()
-                .append("jdbc:")
-                .append(dbVendor)
-                .append("://127.0.0.1/")
-                .append("?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
-                .toString();
-        try {
-            return DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            throw new Error(e);
-        }
-    }
-
-    static void registerJDBCDriver() {
-        // Attempt to register JDBC Driver
-        try {
-            DriverManager.registerDriver(Driver.class.newInstance());
-        } catch (InstantiationException | IllegalAccessException | SQLException e1) {
-            throw new RuntimeException(e1);
-        }
-    }
+//    static Connection getConnection(String dbVendor) {
+//        String username = "laura";
+//        String password = "zipcode0";
+//        String url = new StringBuilder()
+//                .append("jdbc:")
+//                .append(dbVendor)
+//                .append("://127.0.0.1/")
+//                .append("?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
+//                .toString();
+//        try {
+//            return DriverManager.getConnection(url, username, password);
+//        } catch (SQLException e) {
+//            throw new Error(e);
+//        }
+//    }
+//
+//    static void registerJDBCDriver() {
+//        // Attempt to register JDBC Driver
+//        try {
+//            DriverManager.registerDriver(Driver.class.newInstance());
+//        } catch (InstantiationException | IllegalAccessException | SQLException e1) {
+//            throw new RuntimeException(e1);
+//        }
+//    }
 
 }

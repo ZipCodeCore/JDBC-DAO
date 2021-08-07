@@ -44,13 +44,15 @@ public class CityRepository implements Repo {
             while (resultSet.next()) {
                 String id = resultSet.getString(1);
                 String name = resultSet.getString(2);
-                String population = resultSet.getString(3);
-                String level = resultSet.getString(4);
+                Integer population = resultSet.getInt(3);
+                Integer level = resultSet.getInt(4);
                 list.add(new City(
                         Long.parseLong(id),
                         name,
-                        Integer.parseInt(population),
-                        Integer.parseInt(level)));
+                        population,
+                        level));
+//                        Integer.parseInt(population),
+//                        Integer.parseInt(level)));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables);
@@ -85,7 +87,7 @@ public class CityRepository implements Repo {
 
     public void delete(Long id) {
         executeStatement(String.format(new StringBuilder()
-                 .append("DROP FROM ciudades.city ")
+                 .append("DELETE FROM ciudades.city ")
                 .append("WHERE id = %s;")
                 .toString(),
                 id));
