@@ -1,9 +1,18 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.StringJoiner;
 
 public class Student {
 
+    private int age;
     private Long id;
     private  String name;
     private Integer grade;
@@ -14,17 +23,28 @@ public class Student {
     public Student() {
     }
 
-    public Student(Long id, String name, Integer grade, String school, LocalDate dateOfBirth){
+    public Student(Long id, String name, Integer grade, String school){
         this.id = id;
         this.name = name;
         this.grade = grade;
         this.school = school;
+        //this.dateOfBirth = dateOfBirth;
+    }
+
+    public Student(Long id, String name, Integer grade, String school, LocalDate dateOfBirth){
+        this(id, name, grade, school);
         this.dateOfBirth = dateOfBirth;
     }
 
     public Student (Long id, String name, Integer grade, String school, LocalDate dateOfBirth, String location){
         this(id, name, grade, school, dateOfBirth);
         this.location = location;
+    }
+
+    public Student(Long id, String name, Integer grade, String school, int age) {
+        this(id, name, grade, school);
+        this.age = age;
+
     }
 
     public Long getId() {
@@ -59,14 +79,36 @@ public class Student {
         this.school = school;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+    public String getDateOfBirthSQLString() {
+        String toDate = "TO_DATE(" + getDOBString() + ", 'YYYY/MM/DD')";
+        return toDate;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public String getDOBString(){
+        String joined = "";
+        int year = dateOfBirth.getYear();
+        int month = dateOfBirth.getMonthValue();
+        int day = dateOfBirth.getDayOfMonth();
+
+        if (month < 10 && day < 10){
+            joined = String.format("'%s/0%s/0%s'", year, month, day);
+        } else if (month < 10){
+            joined = String.format("'%s/0%d/%s'", year, month, day);
+        } else if (day < 10) {
+            joined = String.format("'%s/%s/0%s'", year, month, day);
+        } else
+
+         joined = String.format("'%s/%s/%s'", year, month, day);
+
+
+        return joined;
+
     }
 
+    public Integer getAge() {
+        int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        return age;
+    }
     public String getLocation() {
         return location;
     }
@@ -86,4 +128,6 @@ public class Student {
                 ", location='" + location + '\'' +
                 '}';
     }
+
+
 }
