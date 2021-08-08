@@ -5,6 +5,8 @@ import models.Student;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +26,15 @@ public class StudentRepository implements Repo{
     public void create(Student student) {
         executeStatement(String.format(new StringBuilder()
                         .append("INSERT INTO IAODataTest.students(")
-                        .append("id, name, grade, school, age) ")
-                        .append("VALUES (%s, '%s', %s, '%s', %s);")
+                        .append("id, name, grade, school, DOB, age) ")
+                        .append("VALUES (%s, '%s', %s, '%s', DATE '%s', %s);")
                         .toString(),
                 student.getId(),
                 student.getName(),
                 student.getGrade(),
                 student.getSchool(),
-                student.getAge()));
+                student.getDateOfBirthSQLString(),
+                student.getAge()));  //age will appear in table but not in resultSet;
     }
 
     public List<Student> readAll() {
@@ -43,13 +46,13 @@ public class StudentRepository implements Repo{
                 String name = resultSet.getString(2);
                 String grade = resultSet.getString(3);
                 String school = resultSet.getString(4);
-                String age = resultSet.getString(5);
+                String dob = resultSet.getString(5);
                 list.add(new Student (
                         Long.parseLong(id),
                         name,
                         Integer.parseInt(grade),
                         school,
-                        Integer.parseInt(age)));
+                        LocalDate.parse(dob)));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables);
@@ -64,5 +67,34 @@ public class StudentRepository implements Repo{
                 .filter(student -> student.getId().equals(studentId))
                 .findAny()
                 .get();
+    }
+
+    public void updateId(Long id, Student newStudentData) {
+        Long reset = id;
+        Long find = newStudentData.getId();
+        executeStatement(String.format(new StringBuilder()
+                .append("UPDATE students")
+                .append("SET id = %s")
+                .append("WHERE id = %s;")
+                .toString(),
+                reset,
+                find));
+
+
+    }
+
+    public void delete(Long id) {
+        Long deleteThis = id;
+        executeStatement(String.format(new StringBuilder()
+                .append("DELETE * FROM students WHERE id = %s;")
+                .toString(),
+                id));
+
+    }
+
+    public void delete(Student pokemon) {
+        Long find = pokemon.getId();
+        delete(find);
+
     }
 }

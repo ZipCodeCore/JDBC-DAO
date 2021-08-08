@@ -21,6 +21,7 @@ public class MainApplication {
                 .append("name text not null,")
                 .append("grade int not null,")
                 .append("school text,")
+                .append("dob DATE,")
                 .append("age int);")
                 .toString());
 

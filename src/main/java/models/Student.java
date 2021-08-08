@@ -41,11 +41,11 @@ public class Student {
         this.location = location;
     }
 
-    public Student(Long id, String name, Integer grade, String school, int age) {
-        this(id, name, grade, school);
-        this.age = age;
+//    public Student(Long id, String name, Integer grade, String school, int age) {
+//        this(id, name, grade, school);
+//        this.age = age;
 
-    }
+
 
     public Long getId() {
         return id;
@@ -80,7 +80,7 @@ public class Student {
     }
 
     public String getDateOfBirthSQLString() {
-        String toDate = "TO_DATE(" + getDOBString() + ", 'YYYY/MM/DD')";
+        String toDate = getDOBString();
         return toDate;
     }
 
@@ -91,14 +91,14 @@ public class Student {
         int day = dateOfBirth.getDayOfMonth();
 
         if (month < 10 && day < 10){
-            joined = String.format("'%s/0%s/0%s'", year, month, day);
+            joined = String.format("%s-0%s-0%s", year, month, day);
         } else if (month < 10){
-            joined = String.format("'%s/0%d/%s'", year, month, day);
+            joined = String.format("%s-0%d-%s", year, month, day);
         } else if (day < 10) {
-            joined = String.format("'%s/%s/0%s'", year, month, day);
+            joined = String.format("%s-%s-0%s", year, month, day);
         } else
 
-         joined = String.format("'%s/%s/%s'", year, month, day);
+         joined = String.format("%s-%s-%s", year, month, day);
 
 
         return joined;
