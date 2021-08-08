@@ -69,12 +69,12 @@ public class StudentRepository implements Repo{
                 .get();
     }
 
-    public void updateId(Long id, Student newStudentData) {
-        Long reset = id;
+    public void updateId(Long newId, Student newStudentData) {
+        Long reset = newId;
         Long find = newStudentData.getId();
         executeStatement(String.format(new StringBuilder()
-                .append("UPDATE students")
-                .append("SET id = %s")
+                .append("UPDATE students ")
+                .append("SET id = %s ")
                 .append("WHERE id = %s;")
                 .toString(),
                 reset,
@@ -83,17 +83,64 @@ public class StudentRepository implements Repo{
 
     }
 
+    public void updateSchool(String newSchool, Student newStudentData){
+        String reset = newSchool;
+        Long find = newStudentData.getId();
+        executeStatement(String.format(new StringBuilder()
+                        .append("UPDATE students ")
+                        .append("SET school = '%s' ")
+                        .append("WHERE id = %s;")
+                        .toString(),
+                reset,
+                find));
+
+    }
+
+    public  void updateBirthday(LocalDate date, Student newStudentData){
+        String reset = getDOBString(date);
+        Long find = newStudentData.getId();
+        executeStatement(String.format(new StringBuilder()
+                        .append("UPDATE students ")
+                        .append("SET dob = DATE '%s' ")
+                        .append("WHERE id = %s;")
+                        .toString(),
+                reset,
+                find));
+
+    }
+
+    public String getDOBString(LocalDate date){
+        String joined = "";
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+
+        if (month < 10 && day < 10){
+            joined = String.format("%s-0%s-0%s", year, month, day);
+        } else if (month < 10){
+            joined = String.format("%s-0%d-%s", year, month, day);
+        } else if (day < 10) {
+            joined = String.format("%s-%s-0%s", year, month, day);
+        } else
+
+            joined = String.format("%s-%s-%s", year, month, day);
+
+
+        return joined;
+
+    }
+
     public void delete(Long id) {
         Long deleteThis = id;
         executeStatement(String.format(new StringBuilder()
-                .append("DELETE * FROM students WHERE id = %s;")
+                .append("DELETE FROM students WHERE id = %s;")
                 .toString(),
                 id));
 
     }
 
-    public void delete(Student pokemon) {
-        Long find = pokemon.getId();
+    public void delete(Student student) {
+        Long find = student.getId();
         delete(find);
 
     }

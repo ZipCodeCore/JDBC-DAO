@@ -26,8 +26,23 @@ public class MainApplication {
                 .toString());
 
         studentRepository.create(new Student(10L, "Thai", 3, "Sanford", LocalDate.of(2011, 11, 11)));
-        //pokemonRepository.create(new Pokemon(11L, "Ivysaurr", 3, 7));
+        studentRepository.create(new Student(11L, "Tyson", 6, "Kirk Middle", LocalDate.of(2009, 4,17)));
+        studentRepository.create(new Student(12L, "Amira", 1, "Sanford", LocalDate.of(2014, 1,3)));
+        studentRepository.create(new Student(13L, "David", 3, "New Castle Charter", LocalDate.of(2011, 3, 27)));
+        studentRepository.create(new Student(16L, "Kassidy", 10, "Ursuline Academy", LocalDate.of(2005, 5,20)));
+        studentRepository.create(new Student(15L, "Meadow", 6, "Talley Middle", LocalDate.of(2009, 12, 13)));
+        studentRepository.create(new Student (19L, "Arden", 3, "Hanby Elementary", LocalDate.of(2011, 10, 1)));
         System.out.println(studentRepository.readAll());
+        Student arden = new Student (19L, "Arden", 3, "Hanby Elementary");
+        studentRepository.delete(15L);
+        studentRepository.delete(arden);
+        Student kassidy = new Student(16L, "Kassidy", 10, "Ursuline Academy");
+        Student david = new Student(13L, "David", 3, "New Castle Charter", LocalDate.of(2011, 3, 27));
+        studentRepository.updateId(17L, kassidy);
+        studentRepository.updateBirthday(LocalDate.of(2010, 10, 10), david);
+        System.out.println(studentRepository.readAll());
+        System.out.println(studentRepository.read(17L));
+        System.out.println(studentRepository.read(13L));
 
     }
 
