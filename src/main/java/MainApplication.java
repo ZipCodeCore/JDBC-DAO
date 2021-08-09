@@ -1,7 +1,7 @@
 
 import com.mysql.cj.jdbc.Driver;
-import daos.PokemonRepository;
-import models.Pokemon;
+import daos.CarsRepository;
+import models.Cars;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,21 +20,26 @@ public class MainApplication {
     public static void main(String[] args) {
         registerJDBCDriver();
         Connection mysqlDbConnection = getConnection("mysql");
-        PokemonRepository pokemonRepository = new PokemonRepository(mysqlDbConnection);
-        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS databaseName;");
-        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS databaseName;");
-        executeStatement(mysqlDbConnection, "USE databaseName;");
+        CarsRepository carsRepository = new CarsRepository(mysqlDbConnection);
+        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS Vehicles;");
+        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS Vehicles;");
+        executeStatement(mysqlDbConnection, "USE Vehicles;");
         executeStatement(mysqlDbConnection, new StringBuilder()
-                .append("CREATE TABLE IF NOT EXISTS databaseName.pokemonTable(")
+                .append("CREATE TABLE IF NOT EXISTS Vehicles.cars(")
                 .append("id int auto_increment primary key,")
-                .append("name text not null,")
-                .append("primary_type int not null,")
-                .append("secondary_type int null);")
+                .append("make text not null,")
+                .append("year int not null,")
+                .append("vin int not null,")
+                .append("color text null);")
                 .toString());
 
-        pokemonRepository.create(new Pokemon(12L, "Ivysaur", 3, 7));
-        pokemonRepository.create(new Pokemon(13L, "Ivysaurr", 3, 7));
-        System.out.println(pokemonRepository.readAll());
+        carsRepository.create(new Cars(1L, "Kia", 2016, 1891L, "red" ));
+        carsRepository.create(new Cars(2L, "Ford", 2004, 5678L, "purple" ));
+        carsRepository.create(new Cars(3L, "Toyota", 1984, 4685L, "black" ));
+        carsRepository.create(new Cars(4L, "Tesla", 2020, 1627L, "black" ));
+        carsRepository.create(new Cars(5L, "Nissan", 2010, 1467L, "silver" ));
+
+        System.out.println(carsRepository.readAll());
 
     }
 
@@ -85,7 +90,7 @@ public class MainApplication {
 
     static Connection getConnection(String dbVendor) {
         String username = "root";
-        String password = "";
+        String password = "zipcode0";
         String url = new StringBuilder()
                 .append("jdbc:")
                 .append(dbVendor)
