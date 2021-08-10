@@ -1,7 +1,6 @@
 package daos;
 
 import com.mysql.cj.jdbc.Driver;
-import daos.Carepository;
 import models.Car;
 
 import java.sql.Connection;
@@ -16,44 +15,31 @@ import java.util.StringJoiner;
  * @version 1.0.0
  * @date 8/2/21 9:49 AM
  */
-public class Main{
+class MainApplication {
 
     public static void main(String[] args) {
         registerJDBCDriver();
         Connection mysqlDbConnection = getConnection("mysql");
-       Carepository carepository=new Carepository(mysqlDbConnection);
-        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS showroom;");
-        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS showroom;");
-        executeStatement(mysqlDbConnection, "USE showroom;");
+        CarRepo carRepo = new CarRepo(mysqlDbConnection);
+        executeStatement(mysqlDbConnection, "DROP DATABASE IF EXISTS daolab;");
+        executeStatement(mysqlDbConnection, "CREATE DATABASE IF NOT EXISTS daolab;");
+        executeStatement(mysqlDbConnection, "USE daolab;");
         executeStatement(mysqlDbConnection, new StringBuilder()
-                .append("CREATE TABLE IF NOT EXISTS showroom.car(")
-                .append("id int auto_increment primary key,")
-                .append("make VARCHAR(50),")
-                .append("model VARCHAR(50),")
-                .append("year INTEGER,")
-                .append("color VARCHAR(50),")
-                .append("VIN INTEGER);")
+                .append("CREATE TABLE IF NOT EXISTS daolab.vehicle(")
+                .append("primaryId int auto_increment primary key,")
+                .append("make text not null,")
+                .append("model text not null,")
+                .append("color text not null,")
+                .append("vtype text not null,")
+                .append("mpg int not null);")
                 .toString());
-Car volvoCar = new Car("volvo","xc60",2018,"black",45678865);
-carepository.create(volvoCar);
-        //new Carepository(mysqlDbConnection).create(new Car(12L,"volvo","xc60",2018,"black",45678865));
-        //new Carepository(mysqlDbConnection).create(new Car(13L,"tesla","model3",2019,"white",6478836));
-        System.out.println(carepository.readAll());
-//        executeStatement(mysqlDbConnection, new StringBuilder()
-//                .append("INSERT INTO showroom.car(")
-//                .append("id, make,model,year,color,VIN)")
-//                .append("VALUES (12, 'Ivysaur', 3, 7);")
-//                .toString());
-//
-//        executeStatement(mysqlDbConnection, new StringBuilder()
-//                .append("INSERT INTO databaseName.pokemonTable(")
-//                .append("id, name, primary_type, secondary_type) ")
-//                .append("VALUES (13, 'Ivysaurr', 3, 7);")
-//                .toString());
 
-//        String getPokemonTable = "SELECT * FROM databaseName.pokemonTable;";
-//        ResultSet resultSet = executeQuery(mysqlDbConnection, getPokemonTable);
-//        printResults(resultSet);
+        Car car = new Car(12L, "Nissan", "Maxima", "Charcoal", "Car", 40 );
+        carRepo.create(car);
+        carRepo.create(new Car(13L, "Ford", "F150", "Blue", "Truck", 22 ));
+        carRepo.update(12L, new Car("Ford", "F150", "Blue", "Truck", 10 ));
+        carRepo.delete(car);
+        System.out.println(carRepo.readAll());
 
     }
 
@@ -103,8 +89,8 @@ carepository.create(volvoCar);
     }
 
     static Connection getConnection(String dbVendor) {
-        String username = "sitara";
-        String password = "zipcode0";
+        String username = "carl";
+        String password = "carlpass";
         String url = new StringBuilder()
                 .append("jdbc:")
                 .append(dbVendor)

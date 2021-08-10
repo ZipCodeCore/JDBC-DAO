@@ -5,8 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public interface Carepo {
-
+/**
+ * @author git-leon
+ * @version 1.0.0
+ * @date 8/4/21 3:15 PM
+ */
+public interface Repo {
     default void executeStatement(String sqlStatement) {
         try {
             Statement statement = getScrollableStatement();
@@ -26,9 +30,7 @@ public interface Carepo {
         }
     }
 
-    Connection getConnection();
-
-    default ResultSet executeQuery( String sqlQuery) {
+    default ResultSet executeQuery(String sqlQuery) {
         try {
             Statement statement = getScrollableStatement();
             return statement.executeQuery(sqlQuery);
@@ -37,4 +39,5 @@ public interface Carepo {
         }
     }
 
+    Connection getConnection();
 }

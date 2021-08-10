@@ -1,31 +1,47 @@
 package models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * @author git-leon
+ * @version 1.0.0
+ * @date 8/4/21 3:03 PM
+ */
 public class Car {
-    private long id;
+    private Long id;
     private String make;
     private String model;
-    private Integer year;
     private String color;
-    private Integer VIN;
-
+    private String vType;
+    private int mpg;
 
     public Car() {
     }
 
-    public Car( String make, String model, Integer year, String color, Integer VIN) {
-        //this.id = id;
+    public Car(String make, String model, String color, String vType, int mpg) {
+        this.id = null;
         this.make = make;
         this.model = model;
-        this.year = year;
         this.color = color;
-        this.VIN = VIN;
+        this.vType = vType;
+        this.mpg = mpg;
     }
 
-    public long getId() {
+    public Car(Long id, String make, String model, String color, String vType, int mpg) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.color = color;
+        this.vType = vType;
+        this.mpg = mpg;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,14 +61,6 @@ public class Car {
         this.model = model;
     }
 
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
     public String getColor() {
         return color;
     }
@@ -61,12 +69,35 @@ public class Car {
         this.color = color;
     }
 
-    public Integer getVIN() {
-        return VIN;
+    public String getvType() {
+        return vType;
     }
 
-    public void setVIN(Integer VIN) {
-        this.VIN = VIN;
+    public void setvType(String vType) {
+        this.vType = vType;
     }
 
+    public int getMpg() {
+        return mpg;
+    }
+
+    public void setMpg(int mpg) {
+        this.mpg = mpg;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "Pokemon{" +
+                    "id=" + id +
+                    ", Make='" + make + '\'' +
+                    ", Model=" + model +
+                    ", Color=" + color +
+                    ", VehicleType= " + vType +
+                    ", Mpg= " + mpg +
+                    '}';
+        }
+    }
 }
