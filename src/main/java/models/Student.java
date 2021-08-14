@@ -34,6 +34,7 @@ public class Student {
     public Student(Long id, String name, Integer grade, String school, LocalDate dateOfBirth){
         this(id, name, grade, school);
         this.dateOfBirth = dateOfBirth;
+        this.age = getAge();
     }
 
     public Student (Long id, String name, Integer grade, String school, LocalDate dateOfBirth, String location){
