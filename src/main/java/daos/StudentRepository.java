@@ -47,12 +47,14 @@ public class StudentRepository implements Repo{
                 String grade = resultSet.getString(3);
                 String school = resultSet.getString(4);
                 String dob = resultSet.getString(5);
+                String age = resultSet.getString(6);
                 list.add(new Student (
                         Long.parseLong(id),
                         name,
                         Integer.parseInt(grade),
                         school,
-                        LocalDate.parse(dob)));
+                        LocalDate.parse(dob),
+                        Integer.parseInt(age)));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables);

@@ -12,13 +12,14 @@ import java.util.StringJoiner;
 
 public class Student {
 
-    private int age;
     private Long id;
     private  String name;
     private Integer grade;
     private String school;
     private LocalDate dateOfBirth;
+    private Integer age;
     private String location;
+
 
     public Student() {
     }
@@ -28,7 +29,6 @@ public class Student {
         this.name = name;
         this.grade = grade;
         this.school = school;
-        //this.dateOfBirth = dateOfBirth;
     }
 
     public Student(Long id, String name, Integer grade, String school, LocalDate dateOfBirth){
@@ -37,14 +37,15 @@ public class Student {
         this.age = getAge();
     }
 
+    public Student(Long id, String name, Integer grade, String school, LocalDate dateOfBirth, Integer age){
+        this(id, name, grade, school, dateOfBirth);
+        this.age = age;
+    }
+
     public Student (Long id, String name, Integer grade, String school, LocalDate dateOfBirth, String location){
         this(id, name, grade, school, dateOfBirth);
         this.location = location;
     }
-
-//    public Student(Long id, String name, Integer grade, String school, int age) {
-//        this(id, name, grade, school);
-//        this.age = age;
 
 
 
@@ -118,17 +119,16 @@ public class Student {
         this.location = location;
     }
 
-    @Override //add JSON ObjectMapper exception here
-    public String toString() {
+    @Override
+    public String toString() { //add JSON ObjectMapper exception here
         return "Student{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", grade=" + grade +
                 ", school='" + school + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
+                ", age=" + age +
                 ", location='" + location + '\'' +
                 '}';
     }
-
-
 }
